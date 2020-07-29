@@ -18,7 +18,6 @@ class readFile
         string path = @"C:\Users\DESKTOP\Downloads\words_clean.txt";//C:\Users\DESKTOP\Downloads\words_clean.txt
         readText = File.ReadAllLines(path);
         dictionary_name = new Dictionary<string, List<string>>();
-
         foreach (string word in readText)
         {
             List<string> existing;
@@ -30,31 +29,34 @@ class readFile
             }
             existing.Add(value);
         }
-        int t = 0;
     }
 }
 namespace WebApplication1.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        readFile myDictionary;
+       static  readFile myDictionary;
         public ValuesController()
         {
-            myDictionary = new readFile();
+            if (myDictionary == null)
+                myDictionary = new readFile();
         }
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public class msg
         {
-            return new string[] { "value12", "value2" };
+            public msg()
+            {
+                similar = new List<string>();
+            }
+            public List<string> similar { get; set; }
         }
-
         // GET http://localhost:8000/api/values/similar?word=apple
         [HttpGet("similar")]
         public ActionResult<string> Get(string word)
         {
+            
             msg p = new msg(); 
             List<string> existing;
             string word_tmp= word;
@@ -64,25 +66,16 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                p.similar=existing;
+                p.similar = new List<string>(existing);
+                //p.similar=existing;
                 if (p.similar.Contains(word_tmp))
                 {
                     p.similar.Remove(word_tmp);
                 }
-                 
-
-            }
-            //p.similar.Add(word_tmp);
-            
+            }        
             return JsonConvert.SerializeObject(p);
         }
-        public class msg
-        {
-            public msg() {
-                similar = new List<string>();
-            }
-            public List<string> similar { get; set; }
-        }
+
    
         // POST api/values
         [HttpPost]
