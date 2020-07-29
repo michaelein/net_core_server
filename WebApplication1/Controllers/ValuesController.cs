@@ -57,7 +57,7 @@ namespace WebApplication1.Controllers
         {
             msg p = new msg();
             List<string> existing;
-            string word_tmp= word;
+            string word_tmp= word; 
             if (!myDictionary.dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
             }
