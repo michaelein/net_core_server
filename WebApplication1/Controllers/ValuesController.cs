@@ -55,7 +55,7 @@ namespace WebApplication1.Controllers
         [HttpGet("similar")]
         public ActionResult<string> Get(string word)
         {
-            msg p = new msg();
+            msg p = new msg(); 
             List<string> existing;
             string word_tmp= word; 
             if (!myDictionary.dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
