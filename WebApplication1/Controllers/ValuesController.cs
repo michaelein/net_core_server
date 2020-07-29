@@ -57,12 +57,23 @@ namespace WebApplication1.Controllers
         {
             msg p = new msg(); 
             List<string> existing;
-            string word_tmp= word; 
+            string word_tmp= word;
             if (!myDictionary.dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
+                p.similar.Add("-1");
             }
-                p.similar.Add(word);
-            p.similar.Add(myDictionary.readText[0]);
+            else
+            {
+                p.similar=existing;
+                if (p.similar.Contains(word_tmp))
+                {
+                    p.similar.Remove(word_tmp);
+                }
+                 
+
+            }
+            //p.similar.Add(word_tmp);
+            
             return JsonConvert.SerializeObject(p);
         }
         public class msg
