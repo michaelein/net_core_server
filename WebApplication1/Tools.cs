@@ -15,6 +15,7 @@ namespace WebApplication1
         private int _totalRequests = 0;
         public int globalTime = 0;
         public int totalRequests { get { return _totalRequests; } }
+        //https://stackoverflow.com/questions/13181740/c-sharp-thread-safe-fastest-counter
         public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
         public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd); }
         public int avgProcessingTimeNs
