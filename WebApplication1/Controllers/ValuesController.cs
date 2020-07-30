@@ -8,29 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Collections;
 
-class readFile
-{
-    public string[] readText;
-    public Dictionary<string, List<string>> dictionary_name;//= new Dictionary();
 
-    public readFile()
-    {
-        string path = @"C:\Users\DESKTOP\Downloads\words_clean.txt";//C:\Users\DESKTOP\Downloads\words_clean.txt
-        readText = File.ReadAllLines(path);
-        dictionary_name = new Dictionary<string, List<string>>();
-        foreach (string word in readText)
-        {
-            List<string> existing;
-            string value = word;
-            if (!dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
-            {
-                existing = new List<string>();
-                dictionary_name[String.Concat(word.OrderBy(c => c))] = existing;
-            }
-            existing.Add(value);
-        }
-    }
-}
 namespace WebApplication1.Controllers
 {
 
@@ -38,12 +16,7 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        readFile myDictionary;
-        public ValuesController()
-        {
-           // if (myDictionary == null)
-                myDictionary = new readFile();
-        }
+        public Dictionary<string, List<string>> mfd = Startup.SingletonThreadSafe.Instance.dictionary_name;
         public class msg
         {
             public msg()
@@ -60,7 +33,7 @@ namespace WebApplication1.Controllers
             msg p = new msg(); 
             List<string> existing;
             string word_tmp= word;
-            if (!myDictionary.dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
+            if (!mfd.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
                 p.similar.Add("-1");
             }
