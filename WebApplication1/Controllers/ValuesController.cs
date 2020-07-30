@@ -19,9 +19,9 @@ namespace WebApplication1.Controllers
     {
         public Dictionary<string, StringList> words = SingletonThreadSafe.Instance.dictionary;
 
-        public class msg
+        public class msgSimilar
         {
-            public msg()
+            public msgSimilar()
             {
                 similar = new StringList();
             }
@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
             // the code that you want to measure comes here
            
             SingletonThreadSafe_stat.Instance.IncrementtotalRequestsCounter();
-            msg msgToSend = new msg();
+            msgSimilar msgToSend = new msgSimilar();
             StringList existing;
             string word_tmp= word;
 

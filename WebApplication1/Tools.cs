@@ -7,6 +7,8 @@ using System.Threading;
 
 namespace WebApplication1
 {
+    using StringList = List<string>;
+
     public class SingletonThreadSafe_stat
     {
         private static SingletonThreadSafe_stat _instance;
@@ -50,7 +52,7 @@ namespace WebApplication1
         private static SingletonThreadSafe _instance;
         private static readonly object _lock = new object();
         public string[] ReadText;
-        public Dictionary<string, List<string>> dictionary;
+        public Dictionary<string, StringList> dictionary;
 
 
         private SingletonThreadSafe()
@@ -65,14 +67,14 @@ namespace WebApplication1
             {
                 Console.WriteLine("No file is found-words_clean");
             }
-            dictionary = new Dictionary<string, List<string>>();
+            dictionary = new Dictionary<string, StringList>();
             foreach (string word in ReadText)
             {
-                List<string> existing;
+                StringList existing;
                 string value = word;
                 if (!dictionary.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
                 {
-                    existing = new List<string>();
+                    existing = new StringList();
                     dictionary[String.Concat(word.OrderBy(c => c))] = existing;
                 }
                 existing.Add(value);
