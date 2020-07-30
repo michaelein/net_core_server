@@ -13,10 +13,7 @@ namespace WebApplication1
         private static readonly object _lock = new object();
         public int totalWords;
         private int _totalRequests = 0;
-        //public int avgProcessingTimeNs = 0;
         public int globalTime = 0;
-
-
         public int totalRequests { get { return _totalRequests; } }
         public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
         public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd); }
@@ -25,20 +22,9 @@ namespace WebApplication1
             get
             {    
                     return globalTime / _totalRequests * 100;
-            }
-            
+            }   
         }
 
-        //public int AddReqTime_(int timeToAdd) { return Interlocked. Add(ref globalTime, timeToAdd); }
-
-        //Interlocked.Add(ref Program._value, 1);
-        //  public int IncrementDoneCounter_() { return Interlocked.(ref _totalRequests); }
-
-        /*public void ThreadSafeMethod(string parameter1)
-        {
-            totalRequests++;
-
-        }*/
         private SingletonThreadSafe_stat()
         {
             totalWords = SingletonThreadSafe.Instance.dictionary.Count();

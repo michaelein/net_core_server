@@ -46,7 +46,6 @@ namespace WebApplication1.Controllers
             else
             {
                 msgToSend.similar = new StringList(existing);
-                //p.similar=existing;
                 if (msgToSend.similar.Contains(word_tmp))
                 {
                     msgToSend.similar.Remove(word_tmp);
