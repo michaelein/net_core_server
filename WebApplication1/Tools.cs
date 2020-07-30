@@ -13,7 +13,7 @@ namespace WebApplication1
         private static readonly object _lock = new object();
         public int totalWords;
         private int _totalRequests = 0;
-        public int globalTime = 0;
+        private int globalTime = 0;
         public int totalRequests { get { return _totalRequests; } }
         //https://stackoverflow.com/questions/13181740/c-sharp-thread-safe-fastest-counter
         public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
@@ -49,7 +49,7 @@ namespace WebApplication1
     {
         private static SingletonThreadSafe _instance;
         private static readonly object _lock = new object();
-        public string[] readText;
+        public string[] ReadText;
         public Dictionary<string, List<string>> dictionary;
 
 
@@ -59,14 +59,14 @@ namespace WebApplication1
             path1 += @"/words_clean.txt";
             try
             {
-                readText = File.ReadAllLines(path1);
+                ReadText = File.ReadAllLines(path1);
             }
             catch
             {
-                Console.WriteLine("no file");
+                Console.WriteLine("No file is found-words_clean");
             }
             dictionary = new Dictionary<string, List<string>>();
-            foreach (string word in readText)
+            foreach (string word in ReadText)
             {
                 List<string> existing;
                 string value = word;
