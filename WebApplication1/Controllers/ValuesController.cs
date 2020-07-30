@@ -11,20 +11,21 @@ using System.Threading;
 
 namespace WebApplication1.Controllers
 {
-  
+    using StringList = List<string>;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        public Dictionary<string, List<string>> words = Startup.SingletonThreadSafe.Instance.dictionary;
+        public Dictionary<string, StringList> words = SingletonThreadSafe.Instance.dictionary;
 
         public class msg
         {
             public msg()
             {
-                similar = new List<string>();
+                similar = new StringList();
             }
-            public List<string> similar { get; set; }
+            public StringList similar { get; set; }
         }
         // GET http://localhost:8000/api/values/similar?word=apple
         [HttpGet("similar")]
@@ -33,18 +34,18 @@ namespace WebApplication1.Controllers
             var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure comes here
            
-            Startup.SingletonThreadSafe_stat.Instance.IncrementtotalRequestsCounter();
-
-            msg msgToSend = new msg(); 
-            List<string> existing;
+            SingletonThreadSafe_stat.Instance.IncrementtotalRequestsCounter();
+            msg msgToSend = new msg();
+            StringList existing;
             string word_tmp= word;
+
             if (!words.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
                 msgToSend.similar.Add("-1");
             }
             else
             {
-                msgToSend.similar = new List<string>(existing);
+                msgToSend.similar = new StringList(existing);
                 //p.similar=existing;
                 if (msgToSend.similar.Contains(word_tmp))
                 {
@@ -53,16 +54,14 @@ namespace WebApplication1.Controllers
             }
             watch.Stop();
 
-            var elapsedMs = watch.Elapsed.Ticks * 100;
+            int elapsed =(int)watch.Elapsed.Ticks;
+            SingletonThreadSafe_stat.Instance.AddReqTime(elapsed);
             return JsonConvert.SerializeObject(msgToSend);
         }
 
         public class msg_stats
         {
-            /*public msg_stats()
-            {
-                similar = new List<string>();
-            }*/
+
             public int totalWords { get; set; }
             public int totalRequests { get; set; }
             public int avgProcessingTimeNs { get; set; }
@@ -71,13 +70,11 @@ namespace WebApplication1.Controllers
         [HttpGet("stats")]
         public ActionResult<string> Get()
         {
-            var stat = Startup.SingletonThreadSafe_stat.Instance;
-
+            var stat = SingletonThreadSafe_stat.Instance;
             msg_stats msgToSend = new msg_stats();
             msgToSend.totalWords = stat.totalWords;
             msgToSend.totalRequests = stat.totalRequests;
             msgToSend.avgProcessingTimeNs = stat.avgProcessingTimeNs;
-
             return JsonConvert.SerializeObject(msgToSend);
         }
 
