@@ -61,7 +61,7 @@ namespace WebApplication1
         {
             private static SingletonThreadSafe_stat _instance;
             private static readonly object _lock = new object();
-            public int totalWords =0;
+            public int totalWords ;
             private int _totalRequests =0;
             public int avgProcessingTimeNs =0;
             //private int _doneCounter;
@@ -76,6 +76,7 @@ namespace WebApplication1
             }*/
             private SingletonThreadSafe_stat()
             {
+                totalWords = SingletonThreadSafe.Instance.dictionary.Count();
             }
             public static SingletonThreadSafe_stat Instance
             {

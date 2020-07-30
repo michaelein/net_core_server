@@ -30,10 +30,11 @@ namespace WebApplication1.Controllers
         [HttpGet("similar")]
         public ActionResult<string> Get(string word)
         {
-            //var t = Startup.SingletonThreadSafe_stat.Instance;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            // the code that you want to measure comes here
+           
             Startup.SingletonThreadSafe_stat.Instance.IncrementDoneCounter();
-            //t.totalRequests
-            // Interlocked.Increment(ref COUNTER);
+
             msg msgToSend = new msg(); 
             List<string> existing;
             string word_tmp= word;
@@ -49,7 +50,10 @@ namespace WebApplication1.Controllers
                 {
                     msgToSend.similar.Remove(word_tmp);
                 }
-            }        
+            }
+            watch.Stop();
+
+            var elapsedMs = watch.Elapsed.Ticks * 100;
             return JsonConvert.SerializeObject(msgToSend);
         }
 
@@ -70,7 +74,10 @@ namespace WebApplication1.Controllers
             var stat = Startup.SingletonThreadSafe_stat.Instance;
 
             msg_stats msgToSend = new msg_stats();
-            msgToSend.totalRequests=stat.totalRequests;
+            msgToSend.totalWords = stat.totalWords;
+            msgToSend.totalRequests = stat.totalRequests;
+            msgToSend.avgProcessingTimeNs = stat.avgProcessingTimeNs;
+
             return JsonConvert.SerializeObject(msgToSend);
         }
 
