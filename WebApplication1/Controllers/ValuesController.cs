@@ -38,10 +38,10 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-       static  readFile myDictionary;
+        readFile myDictionary;
         public ValuesController()
         {
-            if (myDictionary == null)
+           // if (myDictionary == null)
                 myDictionary = new readFile();
         }
         public class msg
