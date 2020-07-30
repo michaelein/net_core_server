@@ -7,16 +7,17 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections;
-
+using System.Threading;
 
 namespace WebApplication1.Controllers
 {
-
+  
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        public Dictionary<string, List<string>> mfd = Startup.SingletonThreadSafe.Instance.dictionary_name;
+        public Dictionary<string, List<string>> words = Startup.SingletonThreadSafe.Instance.dictionary;
+
         public class msg
         {
             public msg()
@@ -29,27 +30,51 @@ namespace WebApplication1.Controllers
         [HttpGet("similar")]
         public ActionResult<string> Get(string word)
         {
-            
-            msg p = new msg(); 
+            //var t = Startup.SingletonThreadSafe_stat.Instance;
+            Startup.SingletonThreadSafe_stat.Instance.IncrementDoneCounter();
+            //t.totalRequests
+            // Interlocked.Increment(ref COUNTER);
+            msg msgToSend = new msg(); 
             List<string> existing;
             string word_tmp= word;
-            if (!mfd.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
+            if (!words.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
-                p.similar.Add("-1");
+                msgToSend.similar.Add("-1");
             }
             else
             {
-                p.similar = new List<string>(existing);
+                msgToSend.similar = new List<string>(existing);
                 //p.similar=existing;
-                if (p.similar.Contains(word_tmp))
+                if (msgToSend.similar.Contains(word_tmp))
                 {
-                    p.similar.Remove(word_tmp);
+                    msgToSend.similar.Remove(word_tmp);
                 }
             }        
-            return JsonConvert.SerializeObject(p);
+            return JsonConvert.SerializeObject(msgToSend);
         }
 
-   
+        public class msg_stats
+        {
+            /*public msg_stats()
+            {
+                similar = new List<string>();
+            }*/
+            public int totalWords { get; set; }
+            public int totalRequests { get; set; }
+            public int avgProcessingTimeNs { get; set; }
+        }
+        // GET http://localhost:8000/api/values/stats
+        [HttpGet("stats")]
+        public ActionResult<string> Get()
+        {
+            var stat = Startup.SingletonThreadSafe_stat.Instance;
+
+            msg_stats msgToSend = new msg_stats();
+            msgToSend.totalRequests=stat.totalRequests;
+            return JsonConvert.SerializeObject(msgToSend);
+        }
+
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)

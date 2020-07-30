@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,27 +22,26 @@ namespace WebApplication1
             private static SingletonThreadSafe _instance;
             private static readonly object _lock = new object();
             public string[] readText;
-            public Dictionary<string, List<string>> dictionary_name;
+            public Dictionary<string, List<string>> dictionary;
 
-            public void init()
+          
+            private SingletonThreadSafe()
             {
-                string path = @"C:\Users\DESKTOP\Downloads\words_clean.txt";//C:\Users\DESKTOP\Downloads\words_clean.txt
+                string path = @"C:\Users\DESKTOP\Downloads\words_clean.txt";
                 readText = File.ReadAllLines(path);
-                dictionary_name = new Dictionary<string, List<string>>();
+                dictionary = new Dictionary<string, List<string>>();
                 foreach (string word in readText)
                 {
                     List<string> existing;
                     string value = word;
-                    if (!dictionary_name.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
+                    if (!dictionary.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
                     {
                         existing = new List<string>();
-                        dictionary_name[String.Concat(word.OrderBy(c => c))] = existing;
+                        dictionary[String.Concat(word.OrderBy(c => c))] = existing;
                     }
                     existing.Add(value);
                 }
             }
-            private SingletonThreadSafe() { }
-            public int g;
             public static SingletonThreadSafe Instance
             {
                 get
@@ -57,13 +57,45 @@ namespace WebApplication1
                 }
             }
         }
-  
-    public int g;
+        public class SingletonThreadSafe_stat
+        {
+            private static SingletonThreadSafe_stat _instance;
+            private static readonly object _lock = new object();
+            public int totalWords =0;
+            private int _totalRequests =0;
+            public int avgProcessingTimeNs =0;
+            //private int _doneCounter;
+            public int totalRequests { get { return _totalRequests; } }
+            public int IncrementDoneCounter() { return Interlocked.Increment(ref _totalRequests); }
+          //  public int IncrementDoneCounter_() { return Interlocked.(ref _totalRequests); }
+
+            /*public void ThreadSafeMethod(string parameter1)
+            {
+                totalRequests++;
+                
+            }*/
+            private SingletonThreadSafe_stat()
+            {
+            }
+            public static SingletonThreadSafe_stat Instance
+            {
+                get
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new SingletonThreadSafe_stat();
+                        }
+                        return _instance;
+                    }
+                }
+            }
+        }
+
         public Startup(IConfiguration configuration)
         {
-            var m=SingletonThreadSafe.Instance;
-            m.init();
-            var s = SingletonThreadSafe.Instance;
+            var Instance_dictionary = SingletonThreadSafe.Instance;
             Configuration = configuration;
         }
 
