@@ -55,8 +55,15 @@ namespace WebApplication1
         private SingletonThreadSafe()
         {
             var path1= Directory.GetCurrentDirectory();
-            path1 += @"\words_clean.txt";
-            readText = File.ReadAllLines(path1);
+            path1 += @"/words_clean.txt";
+            try
+            {
+                readText = File.ReadAllLines(path1);
+            }
+            catch
+            {
+                Console.WriteLine("no file");
+            }
             dictionary = new Dictionary<string, List<string>>();
             foreach (string word in readText)
             {
