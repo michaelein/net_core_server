@@ -13,8 +13,7 @@ namespace WebApplication1
     
     public class Program
     {
-        public int ofds = 8;
-        public static void Main(string[] args)
+          public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
         }
