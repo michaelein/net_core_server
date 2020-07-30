@@ -46,14 +46,13 @@ namespace WebApplication1
             {
                 get
                 {
-                    lock (_lock)
-                    {
+
                         if (_instance == null)
                         {
                             _instance = new SingletonThreadSafe();
                         }
                         return _instance;
-                    }
+
                 }
             }
         }
@@ -66,8 +65,10 @@ namespace WebApplication1
             public int avgProcessingTimeNs =0;
             //private int _doneCounter;
             public int totalRequests { get { return _totalRequests; } }
-            public int IncrementDoneCounter() { return Interlocked.Increment(ref _totalRequests); }
-          //  public int IncrementDoneCounter_() { return Interlocked.(ref _totalRequests); }
+            public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
+            public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref _totalRequests, timeToAdd); }
+            //Interlocked.Add(ref Program._value, 1);
+            //  public int IncrementDoneCounter_() { return Interlocked.(ref _totalRequests); }
 
             /*public void ThreadSafeMethod(string parameter1)
             {

@@ -33,7 +33,7 @@ namespace WebApplication1.Controllers
             var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure comes here
            
-            Startup.SingletonThreadSafe_stat.Instance.IncrementDoneCounter();
+            Startup.SingletonThreadSafe_stat.Instance.IncrementtotalRequestsCounter();
 
             msg msgToSend = new msg(); 
             List<string> existing;
