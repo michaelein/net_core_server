@@ -19,7 +19,8 @@ namespace WebApplication1
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:8000")
+            .UseKestrel()
                 .UseStartup<Startup>();
 
     }
