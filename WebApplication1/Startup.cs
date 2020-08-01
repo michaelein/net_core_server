@@ -19,7 +19,7 @@ namespace WebApplication1
     {
         public Startup(IConfiguration configuration)
         {
-            var InstanceDictionary = SingletonThreadSafe.Instance;
+            var InstanceDictionary = SingletonReadFile.Instance;
             Configuration = configuration;
         }
 

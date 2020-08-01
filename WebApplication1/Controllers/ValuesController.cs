@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        public Dictionary<string, StringList> words = SingletonThreadSafe.Instance.dictionary;
+        public Dictionary<string, StringList> words = SingletonReadFile.Instance.dictionary;
 
         public class msgSimilar
         {

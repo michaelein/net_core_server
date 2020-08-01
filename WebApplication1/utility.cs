@@ -35,7 +35,7 @@ namespace WebApplication1
 
         private SingletonThreadSafe_stat()
         {
-            totalWords = SingletonThreadSafe.Instance.dictionary.Count();
+            totalWords = SingletonReadFile.Instance.dictionary.Count();
         }
         public static SingletonThreadSafe_stat Instance
         {
@@ -52,21 +52,21 @@ namespace WebApplication1
             }
         }
     }
-    public class SingletonThreadSafe
+    public class SingletonReadFile
     {
-        private static SingletonThreadSafe _instance;
+        private static SingletonReadFile _instance;
         private static readonly object _lock = new object();
         public string[] ReadText;
         public Dictionary<string, StringList> dictionary;
 
 
-        private SingletonThreadSafe()
+        private SingletonReadFile()
         {
-            var path1= Directory.GetCurrentDirectory();
-            path1 += @"/words_clean.txt";
+            var Path1= Directory.GetCurrentDirectory();
+            Path1 += @"/words_clean.txt";
             try
             {
-                ReadText = File.ReadAllLines(path1);
+                ReadText = File.ReadAllLines(Path1);
             }
             catch (FileNotFoundException e)
             {
@@ -86,13 +86,13 @@ namespace WebApplication1
                 existing.Add(value);
             }
         }
-        public static SingletonThreadSafe Instance
+        public static SingletonReadFile Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new SingletonThreadSafe();
+                    _instance = new SingletonReadFile();
                 }
                 return _instance;
 
