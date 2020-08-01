@@ -5,12 +5,17 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 
+
 namespace WebApplication1
 {
+
+    
     using StringList = List<string>;
 
     public class SingletonThreadSafe_stat
     {
+        const int betterRange = 100;
+        const int NsFactor = 10000;
         private static SingletonThreadSafe_stat _instance;
         private static readonly object _lock = new object();
         public int totalWords;
@@ -19,12 +24,12 @@ namespace WebApplication1
         public int totalRequests { get { return _totalRequests; } }
         //https://stackoverflow.com/questions/13181740/c-sharp-thread-safe-fastest-counter
         public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
-        public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd); }
+        public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd / betterRange); }
         public int avgProcessingTimeNs
         {
             get
             {    
-                    return globalTime / _totalRequests * 100;
+                    return globalTime / _totalRequests * NsFactor;
             }   
         }
 
@@ -63,9 +68,10 @@ namespace WebApplication1
             {
                 ReadText = File.ReadAllLines(path1);
             }
-            catch
+            catch (FileNotFoundException e)
             {
-                Console.WriteLine("No file is found-words_clean");
+                Console.WriteLine($"[Data File Missing] {e}");
+                throw new FileNotFoundException(@"[data.txt not in c:\temp directory]", e);
             }
             dictionary = new Dictionary<string, StringList>();
             foreach (string word in ReadText)
