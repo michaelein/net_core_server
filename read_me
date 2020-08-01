@@ -1,0 +1,33 @@
+.Net Core Server
+
+
+A small web service for printing similar words in the English language.
+Two words w_1 and w_2 are considered similar if w_1 is a letter permutation of w_2 (e.g., "stressed" and "desserts"). 
+
+Algorithm description:
+Initial in startup time:
+	1.for each word in the “words_clean” file 
+		a.sort the word alphabetically.
+		b.Enter the sorted word as a key to the dictionary.
+		c.Add the original word to the value.
+Runtime gets request:
+	1.sort the word alphabetically.
+	2.return all the promotion list except the requested word.
+
+
+Please find my code in the following link:
+https://github.com/michaelein/net_core_server
+
+
+	
+Follow the below steps to run the application:
+
+1.Publish application as a self contained application:
+	dotnet publish -c release -r ubuntu.16.04-x64 --self-contained
+2.Copy the publish folder to the Linux machine.
+3.please install .NET Core Runtime.
+4.Open the Linux terminal (CLI) and go to the project directory
+5.Provide execute permissions:	
+	chmod 777 ./WebApplication1
+6.Execute the application
+	./WebApplication1
