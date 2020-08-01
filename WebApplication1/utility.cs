@@ -8,10 +8,7 @@ using System.Threading;
 
 namespace WebApplication1
 {
-
-    
     using StringList = List<string>;
-
     public class SingletonThreadSafe_stat
     {
         const int betterRange = 100;
@@ -32,7 +29,6 @@ namespace WebApplication1
                     return globalTime / _totalRequests * NsFactor;
             }   
         }
-
         private SingletonThreadSafe_stat()
         {
             totalWords = SingletonReadFile.Instance.dictionary.Count();
@@ -58,8 +54,6 @@ namespace WebApplication1
         private static readonly object _lock = new object();
         public string[] ReadText;
         public Dictionary<string, StringList> dictionary;
-
-
         private SingletonReadFile()
         {
             var Path1= Directory.GetCurrentDirectory();
@@ -95,7 +89,6 @@ namespace WebApplication1
                     _instance = new SingletonReadFile();
                 }
                 return _instance;
-
             }
         }
     }

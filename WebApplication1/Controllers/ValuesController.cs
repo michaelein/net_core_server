@@ -18,7 +18,6 @@ namespace WebApplication1.Controllers
     public class ValuesController : ControllerBase
     {
         public Dictionary<string, StringList> words = SingletonReadFile.Instance.dictionary;
-
         public class msgSimilar
         {
             public msgSimilar()
@@ -31,14 +30,11 @@ namespace WebApplication1.Controllers
         [HttpGet("similar")]
         public ActionResult<string> Get(string word)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            // the code that you want to measure comes here
-           
+            var watch = System.Diagnostics.Stopwatch.StartNew();         
             SingletonThreadSafe_stat.Instance.IncrementtotalRequestsCounter();
             msgSimilar msgToSend = new msgSimilar();
             StringList existing;
             string word_tmp= word;
-
             if (!words.TryGetValue(String.Concat(word.OrderBy(c => c)), out existing))
             {
                 msgToSend.similar.Add("-1");
@@ -52,19 +48,17 @@ namespace WebApplication1.Controllers
                 }
             }
             watch.Stop();
-
             int elapsed =(int)watch.Elapsed.Ticks;
             SingletonThreadSafe_stat.Instance.AddReqTime(elapsed);
             return JsonConvert.SerializeObject(msgToSend);
         }
-
         public class msg_stats
         {
-
             public int totalWords { get; set; }
             public int totalRequests { get; set; }
             public int avgProcessingTimeNs { get; set; }
         }
+
         // GET http://localhost:8000/api/values/stats
         [HttpGet("stats")]
         public ActionResult<string> Get()
