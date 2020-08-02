@@ -9,10 +9,13 @@ using System.Threading;
 namespace WebApplication1
 {
     using StringList = List<string>;
+    static class Constants
+    {
+        public const int betterRange = 100;
+        public const int NsFactor = 10000;
+    }
     public class SingletonThreadSafe_stat
     {
-        const int betterRange = 100;
-        const int NsFactor = 10000;
         private static SingletonThreadSafe_stat _instance;
         private static readonly object _lock = new object();
         public int totalWords;
@@ -21,12 +24,12 @@ namespace WebApplication1
         public int totalRequests { get { return _totalRequests; } }
         //https://stackoverflow.com/questions/13181740/c-sharp-thread-safe-fastest-counter
         public int IncrementtotalRequestsCounter() { return Interlocked.Increment(ref _totalRequests); }
-        public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd / betterRange); }
+        public int AddReqTime(int timeToAdd) { return Interlocked.Add(ref globalTime, timeToAdd / Constants.betterRange); }
         public int avgProcessingTimeNs
         {
             get
             {    
-                    return globalTime / _totalRequests * NsFactor;
+                    return globalTime / _totalRequests * Constants.NsFactor;
             }   
         }
         private SingletonThreadSafe_stat()

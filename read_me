@@ -14,8 +14,7 @@ Runtime gets request:
 	1.Sort the word's letters alphabetically.
 	2.Return all the permutations list except of the requested word.
 
-Note:The algorithm assume the string's length is not too long.
-In case of a very long strings it is better to change the algorithm into one that will include compression of multiple instances for each char.
+
 
 Please find my code in the following link:
 https://github.com/michaelein/net_core_server
@@ -30,6 +29,14 @@ Follow the below steps to run the application:
 3.Install .NET Core Runtime.
 4.Open the Linux terminal (CLI) and go to the project directory
 5.Provide execute permissions:	
-	chmod 777 ./WebApplication1
+	chmod 777 -R ./WebApplication1
 6.Execute the application
 	./WebApplication1
+	
+Note1:The algorithm assume the string's length is not too long.
+In case of a very long strings, it is better to change the algorithm into one that will include 
+enconding that indicates the amount of apperences for each alphabetical char.
+For example:
+"bbaaaace" --> "a4b2c1e1"
+Note2:For large words txt file better use DataBase.
+Note3:For more statistics, it's preferable to use statistical tools.
